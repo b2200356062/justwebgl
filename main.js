@@ -17,7 +17,7 @@ function hellotriangle(){
         0.0, 0.5,
         // bottom left
         -0.5, -0.5,
-        // bottom right
+        // bottom right     
         0.5, -0.5
     ];
 
