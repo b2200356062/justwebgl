@@ -119,10 +119,4 @@ function hellotriangle(){
 
     //draw call
     gl.drawArrays(gl.TRIANGLES, 0, 3);
-
-
-
-
-
-
 }
