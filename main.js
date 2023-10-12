@@ -1,4 +1,3 @@
-
 try {
     hellotriangle();
 }catch (e){
@@ -25,27 +24,29 @@ function hellotriangle(){
     // cpu bufferı olustur (float32 array) sonra gpu bufferı olustur. sonra bufferı bindla ve datasını gir(data source = cpu buffer olcak)
     const triangleverticescpubuffer = new Float32Array(trianglevertices); // cpu visible, javascriptdeki sayılar arka arkaya (array) olmayabiliyor
     const trianglegeobuffer = gl.createBuffer(); // buffer on the gpu, needs attachment
-    gl.bindBuffer(gl.ARRAY_BUFFER, trianglegeobuffer); // attached to array buffer
+    gl.bindBuffer(gl.ARRAY_BUFFER, trianglegeobuffer); // attach to array buffer
     gl.bufferData(gl.ARRAY_BUFFER, triangleverticescpubuffer, gl.STATIC_DRAW); // cpudaki bufferı gpuya göndermek
-
 
     // vertex shader sourceu gir
     // vec2 means 2 number
+    // vertex position bir attribute.
     const vertexshadersource=
         `#version 300 es
         precision mediump float;
         
-        in vec2 vertexposition; 
+        in vec2 vertexposition;
         
         void main(){
             gl_Position = vec4(vertexposition, 0.0, 1.0);
         }`;
+
 
     // vertex shaderı olustur, sourceunu belirle ve compilela
     const vertexshader = gl.createShader(gl.VERTEX_SHADER);
     gl.shaderSource(vertexshader, vertexshadersource);
     gl.compileShader(vertexshader);
 
+    // error handling for vertex shader
     if (!gl.getShaderParameter(vertexshader, gl.COMPILE_STATUS)){
         alert("shader zortladı loga bak!");
         const compileerror = gl.getShaderInfoLog(vertexshader);
@@ -58,14 +59,17 @@ function hellotriangle(){
         `#version 300 es
         precision mediump float;
         out vec4 outputcolor;
+        
         void main(){
             outputcolor = vec4(0.294, 0.0, 0.51, 1.0);
         }`;
 
+    // create fragment shader
     const fragmentshader = gl.createShader(gl.FRAGMENT_SHADER);
-    gl.shaderSource(fragmentshader, fragmentshadersource);
-    gl.compileShader(fragmentshader);
+    gl.shaderSource(fragmentshader, fragmentshadersource); // shader sourceu shadera bagla??
+    gl.compileShader(fragmentshader); // compile shader
 
+    // fragment shader error handling
     if(!gl.getShaderParameter(fragmentshader, gl.COMPILE_STATUS)){
         alert("fragment shader zortladı loga bak");
         const compileeror2 = gl.getShaderInfoLog(fragmentshader);
@@ -76,16 +80,17 @@ function hellotriangle(){
     // programı olustur
     const triangleprogram = gl.createProgram();
 
-    //programa shaderları attachla
+    //shaderları programa attachle
     gl.attachShader(triangleprogram, vertexshader);
     gl.attachShader(triangleprogram, fragmentshader);
 
-    //programı linkle
+    //shaderları programı linkle
     gl.linkProgram(triangleprogram);
 
     //attribute location belirle
     const vertexpositionattributelocation = gl.getAttribLocation(triangleprogram, 'vertexposition');
 
+    // vertex position attribute 0 olmalı??
     if(vertexpositionattributelocation < 0){
         console.log("vertexposition 0dan kücük")
         return;
