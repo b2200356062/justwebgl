@@ -1,3 +1,4 @@
+
 try {
     hellotriangle();
 }catch (e){
@@ -18,7 +19,7 @@ function hellotriangle(){
         // bottom left
         -0.5, -0.5,
         // bottom right     
-        0.5, -0.5
+        0.5, -0.5,
     ];
 
     // cpu bufferı olustur (float32 array) sonra gpu bufferı olustur. sonra bufferı bindla ve datasını gir(data source = cpu buffer olcak)
@@ -44,6 +45,7 @@ function hellotriangle(){
     const vertexshader = gl.createShader(gl.VERTEX_SHADER);
     gl.shaderSource(vertexshader, vertexshadersource);
     gl.compileShader(vertexshader);
+
     if (!gl.getShaderParameter(vertexshader, gl.COMPILE_STATUS)){
         alert("shader zortladı loga bak!");
         const compileerror = gl.getShaderInfoLog(vertexshader);
@@ -63,6 +65,7 @@ function hellotriangle(){
     const fragmentshader = gl.createShader(gl.FRAGMENT_SHADER);
     gl.shaderSource(fragmentshader, fragmentshadersource);
     gl.compileShader(fragmentshader);
+
     if(!gl.getShaderParameter(fragmentshader, gl.COMPILE_STATUS)){
         alert("fragment shader zortladı loga bak");
         const compileeror2 = gl.getShaderInfoLog(fragmentshader);
